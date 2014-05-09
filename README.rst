@@ -8,11 +8,9 @@ These tools allow confirmation while (still) meeting the following objectives:
 
 - Password protected SSH identities
 - SSH identity passwords stored in Mac OS X Keychain
-
-  - Passwords do not need to be entered again and again.
+- Passwords do not need to be entered again and again.
 
 - Absolute minimum install:
-
   - Do not overwrite or replace executables
   - Do not require compiling or Xcode
 
@@ -33,9 +31,9 @@ Installation
 
 1. OS X no longer comes with X11. Unless you have an old release, XQuartz_ is
    required (`#1`_).
-2. Symlink ``ssh-askpass.sh`` to ``/usr/libexec/ssh-askpass``.
-   (The ``install.sh`` script does this.)
-3. It may be convenient to put ``ssh_add_confirm_ids.sh`` in your PATH.
+2. Run ``make install`` to install two scripts on your system:
+   ``/usr/libexec/ssh-askpass`` and ``/usr/libexec/ssh-add-confirm``
+3. Add identities to your Mac OS X Keychain via ``ssh-add -K``
 
 .. _XQuartz: https://xquartz.macosforge.org/landing/
 .. _`#1`: https://github.com/TimZehta/mac-ssh-confirm/issues/1
@@ -44,18 +42,17 @@ Installation
 Use
 ===
 
-1. Add identities to your Mac OS X Keychain via ``ssh-add -K``
-2. Prior to connecting to any hosts, execute ``ssh_add_confirm_ids.sh``
+1. Prior to connecting to any hosts, execute ``ssh-add-confirm``
 
    - In the interest of security, do **not** Always Allow security access to
      your keychain
 
-3. Repeat the step above each time you log into your Mac
+2. Repeat the step above each time you log into your Mac
 
 To clear existing identities in the agent and load configured identies to
 require confirmation:
 
-- ``ssh-add -D; ssh_add_confirm_ids.sh``
+- ``ssh-add -D; ssh-add-confirm``
 
 To clear existing identities in the agent and load identities saved in your
 keychain **without** the need to confirm access:
@@ -66,11 +63,14 @@ keychain **without** the need to confirm access:
 Inspiration
 ===========
 
+- `Original version of these scripts`_ by TimZehta.
 - `And now Chicken of the VNC tunneled through SSH on OS X`_ (includes
   ``macos-askpass``, a SSH_ASKPASS command for Mac OS X)
 - `Making OpenSSH on Mac OS X More Secure`_
 - `Get Current Application with AppleScript`_
 
+.. _Original version of these scripts:
+   https://github.com/TimZehta/mac-ssh-confirm
 .. _And now Chicken of the VNC tunneled through SSH on OS X:
    https://blogs.oracle.com/mock/entry/and_now_chicken_of_the
 .. _Making OpenSSH on Mac OS X More Secure:
