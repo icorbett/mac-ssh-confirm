@@ -44,8 +44,8 @@ else
 
     tell application _app
         display dialog \"${1}\" ¬
-            buttons { \"Deny\", \"Allow\"} ¬
-            default button 2 cancel button 1 ¬
+            buttons { \"Deny\", \"Allow\" } ¬
+            default button 2 ¬
             with title \"SSH AskPass\" with icon caution
     end tell
     ")
@@ -54,6 +54,17 @@ else
     if [[ "${result}" == 'button returned:Allow' ]]
     then
         es=0
+        syslog -s -k \
+            Facility com.apple.console \
+            Level notice \
+            Sender $(echo ${0} | awk -F/ '{print $NF}') \
+            Message "${result} -- ${1}"
+    else
+        syslog -s -k \
+            Facility com.apple.console \
+            Level notice \
+            Sender $(echo ${0} | awk -F/ '{print $NF}') \
+            Message "${result} -- ${1}"
     fi
 fi
 
