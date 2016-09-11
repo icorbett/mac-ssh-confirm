@@ -26,7 +26,7 @@ then
     #### Provide key when invoked as "Enter Passphrase for IDENTITY_PATH: "
     # Isolate identity path
     id=${1#*for }
-    id=${id%: }
+    id=${id% (will confirm each use): }
     # Query Keychain for password
     security -q find-generic-password -a ${id} -w
     es=${?}
