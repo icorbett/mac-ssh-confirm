@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Requirements:
 #    1. each identity must have already been added via ssh-add -K
-#    2. the /usr/libexec/ssh-askpass script must have already been installed
+#    2. the /usr/X11R6/bin/ssh-askpass script must have already been installed
 
 set -o errexit
 set -o errtrace
@@ -13,8 +13,17 @@ trap '_es=${?};
     echo "${0}: line ${_lo}: \"${_co}\" exited with a status of ${_es}";
     exit ${_es}' ERR
 
-if [ ! -z "$1" ]; then
+if [ ! -z "${1}" ]; then
     echo "# Random text to cause stdin read" | ssh-add -c "$1"
 else
-    echo "# Random text to cause stdin read" | ssh-add -c
+    identities=$(awk '/^IdentityFile/ {print $2}' ~/.ssh/config)
+    if [ ! -z "${identities}" ]; then
+        for _id in ${identities} ; do
+            # Replace tilda with expanded path
+            _id=${_id/\~/~}
+            echo "# Random text to cause stdin read" | ssh-add -c "${_id}"
+        done
+    else
+        echo "# Random text to cause stdin read" | ssh-add -c
+    fi
 fi
