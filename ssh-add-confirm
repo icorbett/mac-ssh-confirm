@@ -1,27 +1,3 @@
 #!/bin/bash
-#
-# Requirements:
-#    1. each identity must have already been added via ssh-add -K
-#    2. the /usr/X11R6/bin/ssh-askpass script must have already been installed
-
-set -o errexit
-set -o errtrace
-
-trap '_es=${?};
-    _lo=${LINENO};
-    _co=${BASH_COMMAND};
-    echo "${0}: line ${_lo}: \"${_co}\" exited with a status of ${_es}";
-    exit ${_es}' ERR
-
-if [ ! -z "${1}" ]; then
-    echo "# Random text to cause stdin read" | ssh-add -c "$1"
-else
-    identities=$(awk '/^IdentityFile/ {print $2}' ~/.ssh/config)
-    if [ ! -z "${identities}" ]; then
-        echo "This functionality is removed, use 'ssh-add -c -A' instead"
-        /usr/bin/ssh-add -c -A
-    else
-        echo "# Random text to cause stdin read" | ssh-add -c
-        echo "adding ${_id} for ssh-agent confirmation"
-    fi
-fi
+echo "This functionality is removed, use 'ssh-add -c -A' instead"
+/usr/bin/ssh-add -c -A
