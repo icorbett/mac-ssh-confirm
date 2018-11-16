@@ -18,12 +18,10 @@ if [ ! -z "${1}" ]; then
 else
     identities=$(awk '/^IdentityFile/ {print $2}' ~/.ssh/config)
     if [ ! -z "${identities}" ]; then
-        for _id in ${identities} ; do
-            # Replace tilda with expanded path
-            _id=${_id/\~/~}
-            echo "# Random text to cause stdin read" | ssh-add -c "${_id}"
-        done
+        echo "This functionality is removed, use 'ssh-add -c -A' instead"
+        /usr/bin/ssh-add -c -A
     else
         echo "# Random text to cause stdin read" | ssh-add -c
+        echo "adding ${_id} for ssh-agent confirmation"
     fi
 fi
